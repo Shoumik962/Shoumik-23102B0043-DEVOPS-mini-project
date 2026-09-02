@@ -1,0 +1,50 @@
+name: DevOps CI Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Backend - Test & Package
+        run: |
+          cd backend
+          mvn clean test package
+
+      - name: Frontend - Install & Build
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Smoke Test Backend Health
+        run: |
+          java -jar backend/target/tracker-backend.jar &
+          SERVER_PID=$!
+          sleep 4
+          curl -f http://localhost:8080/api/health
+          curl -f http://localhost:8080/api/stats
+          curl -f http://localhost:8080/api/entries
+          kill $SERVER_PID

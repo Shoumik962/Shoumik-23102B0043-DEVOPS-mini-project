@@ -1,0 +1,15 @@
+# Logs and caches
+*.log
+.DS_Store
+.idea/
+.vscode/
+
+# Node
+node_modules/
+dist/
+npm-debug.log*
+
+# Java / Maven
+target/
+*.class
+dependency-reduced-pom.xml

@@ -1,0 +1,36 @@
+# Multi-stage Dockerfile for Food Waste Tracker Java Backend
+# Stage 1: Build
+FROM maven:3.9-eclipse-temurin-21-alpine AS builder
+
+WORKDIR /app
+
+# Cache dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline -B || true
+
+# Build application
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2: Runtime
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+# Install curl for docker healthcheck
+RUN apk add --no-cache curl
+
+# Non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Copy jar from builder
+COPY --from=builder /app/target/tracker-backend.jar app.jar
+
+ENV PORT=8080
+EXPOSE 8080
+
+HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:8080/api/health || exit 1
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
