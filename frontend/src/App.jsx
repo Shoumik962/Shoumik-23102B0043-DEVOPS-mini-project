@@ -220,76 +220,81 @@ function App() {
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-          <StatCard
-            label="Total Waste Logged"
-            value={stats.totalWasteLogged || `${stats.totalWasteKg || 0} kg`}
-            hint="Aggregated across all locations"
-            color="emerald"
-            trend={stats.reductionRate ? `${stats.reductionRate} reduction` : '-12.5%'}
-            trendType="positive"
-            icon={
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 18h12l3-18H3zM9 6V4a2 2 0 012-2h2a2 2 0 012 2v2" />
-              </svg>
-            }
-          />
-          <StatCard
-            label="Active Entries"
-            value={String(stats.activeEntries ?? 0)}
-            hint="Pending supervisor review"
-            color="amber"
-            trend="Needs audit"
-            trendType="warning"
-            icon={
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            }
-          />
-          <StatCard
-            label="Reviewed & Verified"
-            value={String(stats.reviewedEntries ?? (entries.length - (stats.activeEntries || 0)))}
-            hint="Audited and cleared"
-            color="indigo"
-            trend="Compliant"
-            trendType="positive"
-            icon={
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            }
-          />
-          <StatCard
-            label="Open Alerts / Incidents"
-            value={String(stats.openAlerts ?? 0)}
-            hint="Flagged temperature or spoilage"
-            color="rose"
-            trend={stats.openAlerts > 0 ? 'Requires attention' : 'All clear'}
-            trendType={stats.openAlerts > 0 ? 'danger' : 'positive'}
-            icon={
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            }
-          />
-        </div>
+        {/* Stats Grid (Dashboard only) */}
+        {activeTab === 'dashboard' && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+            <StatCard
+              label="Total Waste Logged"
+              value={stats.totalWasteLogged || `${stats.totalWasteKg || 0} kg`}
+              hint="Aggregated across all locations"
+              color="emerald"
+              trend={stats.reductionRate ? `${stats.reductionRate} reduction` : '-12.5%'}
+              trendType="positive"
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 18h12l3-18H3zM9 6V4a2 2 0 012-2h2a2 2 0 012 2v2" />
+                </svg>
+              }
+            />
+            <StatCard
+              label="Active Entries"
+              value={String(stats.activeEntries ?? 0)}
+              hint="Pending supervisor review"
+              color="amber"
+              trend="Needs audit"
+              trendType="warning"
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+            />
+            <StatCard
+              label="Reviewed & Verified"
+              value={String(stats.reviewedEntries ?? (entries.length - (stats.activeEntries || 0)))}
+              hint="Audited and cleared"
+              color="indigo"
+              trend="Compliant"
+              trendType="positive"
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
+            />
+            <StatCard
+              label="Open Alerts / Incidents"
+              value={String(stats.openAlerts ?? 0)}
+              hint="Flagged temperature or spoilage"
+              color="rose"
+              trend={stats.openAlerts > 0 ? 'Requires attention' : 'All clear'}
+              trendType={stats.openAlerts > 0 ? 'danger' : 'positive'}
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              }
+            />
+          </div>
+        )}
 
-        {/* Analytics & DevOps Telemetry Section */}
-        <div className="mb-8">
-          <AlertsBanner
-            stats={stats}
-            backendStatus={backendStatus}
-            entries={entries}
-            onFilterByStatus={(st) => {
-              setStatusFilter(st)
-              setActiveTab('entries')
-            }}
-          />
-        </div>
+        {/* Analytics & DevOps Telemetry Section (Analytics only) */}
+        {activeTab === 'analytics' && (
+          <div className="mb-8">
+            <AlertsBanner
+              stats={stats}
+              backendStatus={backendStatus}
+              entries={entries}
+              onFilterByStatus={(st) => {
+                setStatusFilter(st)
+                setActiveTab('entries')
+              }}
+            />
+          </div>
+        )}
 
-        {/* Table / Waste Logs Section */}
+        {/* Table / Waste Logs Section (Dashboard and Entries) */}
+        {(activeTab === 'dashboard' || activeTab === 'entries') && (
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
           
           {/* Table Header & Controls */}
@@ -463,6 +468,7 @@ function App() {
             </table>
           </div>
         </div>
+        )}
 
       </main>
 

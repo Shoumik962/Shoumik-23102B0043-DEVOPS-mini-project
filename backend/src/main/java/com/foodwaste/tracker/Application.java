@@ -23,7 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Main application entry point providing REST API services for the Food Waste Tracking Dashboard.
+ * Main application entry point providing REST API services for the Food Waste
+ * Tracking Dashboard.
  */
 public class Application {
     private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
@@ -34,7 +35,7 @@ public class Application {
     private static HttpServer serverInstance;
 
     public static void main(String[] args) {
-        int port = 8080;
+        int port = 8081;
         String portEnv = System.getenv("PORT");
         if (portEnv != null && !portEnv.isBlank()) {
             try {
@@ -46,7 +47,8 @@ public class Application {
         if (args != null && args.length > 0) {
             try {
                 port = Integer.parseInt(args[0].trim());
-            } catch (NumberFormatException ignored) {}
+            } catch (NumberFormatException ignored) {
+            }
         }
 
         try {
@@ -80,7 +82,8 @@ public class Application {
 
         // Root Info
         server.createContext("/", exchange -> {
-            if (CorsHandler.handlePreflight(exchange)) return;
+            if (CorsHandler.handlePreflight(exchange))
+                return;
             if (exchange.getRequestURI().getPath().equals("/")) {
                 Map<String, Object> root = new LinkedHashMap<>();
                 root.put("service", "Food Waste Tracking Dashboard Backend");
@@ -94,7 +97,8 @@ public class Application {
 
         // Health Check Endpoint (DevOps / Docker / Jenkins)
         server.createContext("/api/health", exchange -> {
-            if (CorsHandler.handlePreflight(exchange)) return;
+            if (CorsHandler.handlePreflight(exchange))
+                return;
             long uptimeSeconds = (System.currentTimeMillis() - START_TIME) / 1000;
             Runtime runtime = Runtime.getRuntime();
             long freeMem = runtime.freeMemory() / (1024 * 1024);
@@ -115,7 +119,8 @@ public class Application {
 
         // Stats Endpoint
         server.createContext("/api/stats", exchange -> {
-            if (CorsHandler.handlePreflight(exchange)) return;
+            if (CorsHandler.handlePreflight(exchange))
+                return;
             if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
                 StatsSummary stats = repository.calculateStats();
                 CorsHandler.sendJsonResponse(exchange, 200, GSON.toJson(stats));
@@ -126,7 +131,8 @@ public class Application {
 
         // Entries CRUD Endpoint
         server.createContext("/api/entries", exchange -> {
-            if (CorsHandler.handlePreflight(exchange)) return;
+            if (CorsHandler.handlePreflight(exchange))
+                return;
             String method = exchange.getRequestMethod().toUpperCase();
             String path = exchange.getRequestURI().getPath();
             Map<String, String> queryParams = parseQueryParams(exchange.getRequestURI().getQuery());
@@ -201,7 +207,8 @@ public class Application {
                         }
                         boolean deleted = repository.delete(pathId);
                         if (deleted) {
-                            CorsHandler.sendJsonResponse(exchange, 200, "{\"message\": \"Deleted successfully\", \"id\": \"" + pathId + "\"}");
+                            CorsHandler.sendJsonResponse(exchange, 200,
+                                    "{\"message\": \"Deleted successfully\", \"id\": \"" + pathId + "\"}");
                         } else {
                             CorsHandler.sendJsonResponse(exchange, 404, "{\"error\": \"Entry not found\"}");
                         }
@@ -234,7 +241,8 @@ public class Application {
     }
 
     private static String readRequestBody(HttpExchange exchange) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))) {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {

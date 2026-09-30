@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SeleniumUserJourneysTest {
 
     private static final String BASE_URL = "http://localhost:5173";
-    private static final String BACKEND_URL = "http://localhost:8080/api/health";
+    private static final String BACKEND_URL = "http://localhost:8081/api/health";
     private static Process frontendProcess;
     private static boolean backendStartedLocally = false;
     private WebDriver driver;
@@ -35,8 +35,8 @@ public class SeleniumUserJourneysTest {
     public static void setUpClass() throws Exception {
         // 1. Ensure Backend Server is Running
         if (!isServerUp(BACKEND_URL)) {
-            System.out.println("[Selenium Setup] Starting Backend Server on port 8080...");
-            Application.startServer(8080);
+            System.out.println("[Selenium Setup] Starting Backend Server on port 8081...");
+            Application.startServer(8081);
             backendStartedLocally = true;
             Thread.sleep(1500);
         }
@@ -149,7 +149,7 @@ public class SeleniumUserJourneysTest {
 
         // Assert Backend Health Badge in Navbar
         WebElement healthBadge = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[contains(text(),'Backend:') or contains(text(),'8080 UP')]")
+                By.xpath("//*[contains(text(),'Backend:') or contains(text(),'8081 UP')]")
         ));
         assertTrue(healthBadge.isDisplayed(), "Backend health badge should be online");
 

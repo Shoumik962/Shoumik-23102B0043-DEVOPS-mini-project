@@ -77,7 +77,7 @@ function Navbar({ backendStatus, onRefresh, isRefreshing, activeTab, setActiveTa
               )}
             </span>
             <span className={backendStatus.online ? 'text-slate-700' : 'text-rose-700 font-semibold'}>
-              {backendStatus.online ? 'Backend: 8080 UP' : 'Backend: Disconnected'}
+              {backendStatus.online ? 'Backend: 8081 UP' : 'Backend: Disconnected'}
             </span>
           </div>
 
