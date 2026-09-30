@@ -2,7 +2,7 @@
 
 # ==============================================================================
 # Food Waste Tracker - Unified Runner Script
-# Builds backend, starts Java REST API on port 8080, and Vite Frontend on port 5173
+# Builds backend, starts Java REST API on port 8081, and Vite Frontend on port 5173
 # ==============================================================================
 
 set -e
@@ -15,12 +15,12 @@ echo "=================================================="
 echo " Starting Food Waste Tracking Dashboard Stack"
 echo "=================================================="
 
-# Kill any existing processes on ports 8080 and 5173 before startup
+# Kill any existing processes on ports 8081 and 5173 before startup
 free_ports() {
-    echo "Ensuring ports 8080 and 5173 are free..."
-    PIDS_8080=$(lsof -ti :8080 2>/dev/null || true)
-    if [ -n "$PIDS_8080" ]; then
-        kill -9 $PIDS_8080 2>/dev/null || true
+    echo "Ensuring ports 8081 and 5173 are free..."
+    PIDS_8081=$(lsof -ti :8081 2>/dev/null || true)
+    if [ -n "$PIDS_8081" ]; then
+        kill -9 $PIDS_8081 2>/dev/null || true
     fi
     PIDS_5173=$(lsof -ti :5173 2>/dev/null || true)
     if [ -n "$PIDS_5173" ]; then
@@ -56,14 +56,14 @@ if [ ! -f "$DIR/backend/target/tracker-backend.jar" ]; then
 fi
 
 # 2. Start Backend
-echo "[2/3] Starting Java Backend on http://localhost:8080..."
+echo "[2/3] Starting Java Backend on http://localhost:8081..."
 java -jar "$DIR/backend/target/tracker-backend.jar" &
 BACKEND_PID=$!
 
 # Wait for backend to be healthy
 echo "Waiting for Backend to start..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/api/health >/dev/null 2>&1; then
+    if curl -s http://localhost:8081/api/health >/dev/null 2>&1; then
         echo "Backend is UP and HEALTHY!"
         break
     fi
@@ -83,8 +83,8 @@ cd "$DIR"
 echo "=================================================="
 echo " Stack is RUNNING!"
 echo " Frontend: http://localhost:5173"
-echo " Backend:  http://localhost:8080"
-echo " Health:   http://localhost:8080/api/health"
+echo " Backend:  http://localhost:8081"
+echo " Health:   http://localhost:8081/api/health"
 echo " Press Ctrl+C to stop all services."
 echo "=================================================="
 

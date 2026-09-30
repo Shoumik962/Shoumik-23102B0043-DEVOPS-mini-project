@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
         choice(name: 'DEPLOY_ENV', choices: ['staging', 'production', 'development'], description: 'Target Deployment Environment')
-        string(name: 'HTTP_PORT', defaultValue: '8080', description: 'Backend REST API HTTP Port')
+        string(name: 'HTTP_PORT', defaultValue: '8081', description: 'Backend REST API HTTP Port')
         string(name: 'NGINX_WEB_ROOT', defaultValue: '/usr/share/nginx/html', description: 'Nginx Static Files Deployment Root Directory')
     }
 
@@ -95,7 +95,7 @@ pipeline {
                         java -jar target/tracker-backend.jar &
                         SERVER_PID=$!
                         sleep 3
-                        curl -f http://localhost:8080/api/health || { kill $SERVER_PID; exit 1; }
+                        curl -f http://localhost:8081/api/health || { kill $SERVER_PID; exit 1; }
                         kill $SERVER_PID
                     '''
                 }

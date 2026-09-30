@@ -27,10 +27,10 @@ USER appuser
 # Copy jar from builder
 COPY --from=builder /app/target/tracker-backend.jar app.jar
 
-ENV PORT=8080
-EXPOSE 8080
+ENV PORT=8081
+EXPOSE 8081
 
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:8080/api/health || exit 1
+  CMD curl -f http://localhost:8081/api/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

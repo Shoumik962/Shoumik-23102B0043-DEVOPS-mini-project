@@ -23,7 +23,7 @@ A full-stack, containerized Food Waste Tracking Dashboard built for DevOps autom
              ┌─────────────────────────────────────────────────────┐
              │       Reverse Proxy / Dev Proxy (/api/*)            │
              └──────────────────────────┬──────────────────────────┘
-                                        │  Port 8080
+                                        │  Port 8081
                                         ▼
                  ┌──────────────────────────────────────────┐
                  │          Java REST API Backend           │
@@ -43,7 +43,7 @@ A full-stack, containerized Food Waste Tracking Dashboard built for DevOps autom
 ## 🚀 Quick Start (Run Locally)
 
 ### Option 1: Unified Start Script (Recommended)
-You can start both backend (port `8080`) and frontend (port `5173`) with a single command:
+You can start both backend (port `8081`) and frontend (port `5173`) with a single command:
 
 ```bash
 ./start.sh
@@ -51,8 +51,8 @@ You can start both backend (port `8080`) and frontend (port `5173`) with a singl
 npm start
 ```
 - **Frontend Dashboard**: [http://localhost:5173](http://localhost:5173)
-- **Backend API**: [http://localhost:8080](http://localhost:8080)
-- **Health Check**: [http://localhost:8080/api/health](http://localhost:8080/api/health)
+- **Backend API**: [http://localhost:8081](http://localhost:8081)
+- **Health Check**: [http://localhost:8081/api/health](http://localhost:8081/api/health)
 
 Press `Ctrl+C` to gracefully terminate both services.
 
@@ -65,7 +65,7 @@ Run the fully containerized multi-service stack with Nginx and Java runtime:
 docker compose up --build
 ```
 - **Frontend Container (Nginx)**: [http://localhost:3000](http://localhost:3000)
-- **Backend Container**: [http://localhost:8080](http://localhost:8080)
+- **Backend Container**: [http://localhost:8081](http://localhost:8081)
 
 To stop:
 ```bash

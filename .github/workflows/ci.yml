@@ -44,7 +44,7 @@ jobs:
           java -jar backend/target/tracker-backend.jar &
           SERVER_PID=$!
           sleep 4
-          curl -f http://localhost:8080/api/health
-          curl -f http://localhost:8080/api/stats
-          curl -f http://localhost:8080/api/entries
+          curl -f http://localhost:8081/api/health
+          curl -f http://localhost:8081/api/stats
+          curl -f http://localhost:8081/api/entries
           kill $SERVER_PID
